@@ -35,7 +35,7 @@ typedef struct aux_historial {
 	size_t idx_inicio;
 } aux_historial_t;
 
-bool agregar_pok_baraja(struct pokemon *pok, void *baraja)
+bool agregar_doble_pok_baraja(struct pokemon *pok, void *baraja)
 {
 	baraja_t *baraja_pok = baraja;
 	if (baraja_insertar(baraja_pok, pok) &&
@@ -46,17 +46,13 @@ bool agregar_pok_baraja(struct pokemon *pok, void *baraja)
 
 size_t agregar_pokemones_baraja(baraja_t *baraja, tp1_t *tp1)
 {
-	if (cantidad_baraja(baraja) >= MAX_CARTAS || tp1_cantidad(tp1) == 0)
+	if (tp1_cantidad(tp1) == 0)
 		return 0;
 
-	size_t agregados =
-		2 * (tp1_con_cada_pokemon(tp1, agregar_pok_baraja, baraja) - 1);
+	while (cantidad_baraja(baraja) < MAX_CARTAS)
+		tp1_con_cada_pokemon(tp1, agregar_doble_pok_baraja, baraja);
 
-	while 
-	if (agregados == 0)
-		return agregados;
-
-	return agregados + agregar_pokemones_baraja(baraja, tp1);
+	return cantidad_baraja(baraja);
 }
 
 juego_t *iniciar_juego(tp1_t *pokedex, unsigned int semilla)
@@ -81,9 +77,7 @@ juego_t *iniciar_juego(tp1_t *pokedex, unsigned int semilla)
 		return NULL;
 	}
 
-	size_t cant_agregados =
-		agregar_pokemones_baraja(juego->baraja_pok, pokedex);
-	if (cant_agregados != MAX_CARTAS ||
+	if (agregar_pokemones_baraja(juego->baraja_pok, pokedex) != MAX_CARTAS ||
 	    !baraja_mezclar(juego->baraja_pok, semilla)) {
 		lista_destruir(juego->ultimas_jugadas);
 		destruir_baraja(juego->baraja_pok);
