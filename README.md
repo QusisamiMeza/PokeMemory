@@ -22,3 +22,11 @@ Las instrucciones de compilación, ejecución y explicaciones se encuentran en `
 
 
 ## Visualización
+
+<p align="center">
+    <img src="img/menu.png" width="80%">
+</p>
+
+<p align="center">
+    <img src="img/juego_cartas.png" width="80%">
+</p>
